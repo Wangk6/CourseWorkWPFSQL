@@ -1,0 +1,11 @@
+C:\Users\mcdar\OneDrive - Farmingdale\College\BCS 426\CourseWork\CourseWork\bin\Debug\CourseWork.dll
+C:\Users\mcdar\OneDrive - Farmingdale\College\BCS 426\CourseWork\CourseWork\bin\Debug\CourseWork.pdb
+C:\Users\mcdar\OneDrive - Farmingdale\College\BCS 426\CourseWork\CourseWork\obj\Debug\CourseWork.csproj.CoreCompileInputs.cache
+C:\Users\mcdar\OneDrive - Farmingdale\College\BCS 426\CourseWork\CourseWork\obj\Debug\CourseWork.dll
+C:\Users\mcdar\OneDrive - Farmingdale\College\BCS 426\CourseWork\CourseWork\obj\Debug\CourseWork.pdb
+C:\Users\mcdar\OneDrive - Farmingdale\College\BCS 426\CourseWork\CourseWork\obj\Debug\CourseWork.csprojAssemblyReference.cache
+C:\Users\mcdar\source\repos\CourseWork\CourseWork\CourseWork\bin\Debug\CourseWork.dll
+C:\Users\mcdar\source\repos\CourseWork\CourseWork\CourseWork\bin\Debug\CourseWork.pdb
+C:\Users\mcdar\source\repos\CourseWork\CourseWork\CourseWork\obj\Debug\CourseWork.csproj.CoreCompileInputs.cache
+C:\Users\mcdar\source\repos\CourseWork\CourseWork\CourseWork\obj\Debug\CourseWork.dll
+C:\Users\mcdar\source\repos\CourseWork\CourseWork\CourseWork\obj\Debug\CourseWork.pdb

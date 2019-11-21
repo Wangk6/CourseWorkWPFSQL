@@ -1,0 +1,6 @@
+C:\Users\itlabs.INFO_SERVICES\Downloads\GradeSQLCalculation\CourseWPF\CourseWPF\obj\Debug\CourseWPF.csprojAssemblyReference.cache
+C:\Users\itlabs.INFO_SERVICES\Downloads\GradeSQLCalculation\CourseWPF\CourseWPF\obj\Debug\MainWindow - Copy.g.cs
+C:\Users\itlabs.INFO_SERVICES\Downloads\GradeSQLCalculation\CourseWPF\CourseWPF\obj\Debug\MainWindow.g.cs
+C:\Users\itlabs.INFO_SERVICES\Downloads\GradeSQLCalculation\CourseWPF\CourseWPF\obj\Debug\App.g.cs
+C:\Users\itlabs.INFO_SERVICES\Downloads\GradeSQLCalculation\CourseWPF\CourseWPF\obj\Debug\CourseWPF_MarkupCompile.cache
+C:\Users\itlabs.INFO_SERVICES\Downloads\GradeSQLCalculation\CourseWPF\CourseWPF\obj\Debug\CourseWPF_MarkupCompile.lref
