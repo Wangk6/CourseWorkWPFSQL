@@ -1,19 +1,20 @@
-﻿<Window x:Class="CourseWPF.MainWindow"
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CourseWPF"
+        xmlns:CourseWork="clr-namespace:CourseWork;assembly=CourseWork" x:Class="CourseWPF.MainWindow"
         mc:Ignorable="d"
-        Height="600" Width="1200" Title="CourseWorkGUI-v1 - Kevin Wang" Loaded="Window_Loaded">
+        Height="600" Width="1200" Title="CourseWorkGUI-v2 - Kevin Wang" Loaded="Window_Loaded" Icon="test.png" >
     <Grid>
-        <TextBox x:Name="textBoxGrade" IsReadOnly="True" Height="23" Margin="446,126,266,0" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalContentAlignment="Stretch"/>
-        <TextBox x:Name="textBoxCategoryName" IsReadOnly="True" Height="23" Margin="446,93,266,0" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalContentAlignment="Stretch"/>
-        <TextBox x:Name="textBoxAssignmentName" IsReadOnly="True" Height="23" Margin="446,62,266,0" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalContentAlignment="Stretch"/>
+        <TextBox x:Name="textBoxGrade" IsReadOnly="True" Height="23" Margin="446,126,266,0" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalContentAlignment="Stretch" Text="{Binding SelectedItem.Grade, ElementName=listBoxGrade}" ToolTip="Selected Submissions Grade"/>
+        <TextBox x:Name="textBoxCategoryName" IsReadOnly="True" Height="23" Margin="446,93,266,0" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalContentAlignment="Stretch" Text="{Binding SelectedItem.CategoryName, ElementName=listBoxGrade}" ToolTip="Selected Submissions Category"/>
+        <TextBox x:Name="textBoxAssignmentName" IsReadOnly="True" Height="23" Margin="446,62,266,0" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalContentAlignment="Stretch" Text="{Binding SelectedItem.AssignmentName, ElementName=listBoxGrade}" ToolTip="Selected Submissions Assignment Name"/>
         <Label Content="Assignment Name" HorizontalAlignment="Left" Margin="294,62,0,0" VerticalAlignment="Top" Width="132"/>
         <Label Content="Category Name" HorizontalAlignment="Left" Margin="294,93,0,0" VerticalAlignment="Top" Width="115"/>
         <Label Content="Grade" HorizontalAlignment="Left" Margin="294,126,0,0" VerticalAlignment="Top" Width="52"/>
-        <ListBox x:Name="listBoxGrade" HorizontalAlignment="Left" Height="472" Margin="10,61,0,0" VerticalAlignment="Top" Width="254"/>
+        <ListBox x:Name="listBoxGrade" HorizontalAlignment="Left" Height="472" Margin="10,61,0,0" VerticalAlignment="Top" Width="254" DisplayMemberPath="AssignmentName"/>
         <Label Content="Submissions" HorizontalAlignment="Left" Margin="10,30,0,0" VerticalAlignment="Top" Width="132"/>
         <Menu Margin="0,0,0,0" VerticalAlignment="Top">
             <MenuItem Header="File">

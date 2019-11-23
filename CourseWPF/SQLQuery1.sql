@@ -1,0 +1,6 @@
+﻿CREATE TABLE tblSubmissions (
+	ID INT PRIMARY KEY IDENTITY(1,1)
+	,AssignmentName NVARCHAR(100) NOT NULL
+	,CategoryName NVARCHAR(100) NOT NULL
+	,Grade FLOAT NOT NULL
+)

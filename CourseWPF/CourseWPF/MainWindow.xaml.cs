@@ -33,6 +33,7 @@ using System.Runtime.Serialization;
 using System.Data.SqlClient;
 using System.Data;
 using Dapper;
+using System.Collections.ObjectModel;
 
 namespace CourseWPF
 {
@@ -42,6 +43,7 @@ namespace CourseWPF
     public partial class MainWindow : Window
     {
         CourseWorkClass courseWork;
+        ObservableCollection<Submission> Submissions;
 
         static string databaseName = "CourseWork";
         static string submissionTableName = "tblSubmissions";
@@ -49,8 +51,10 @@ namespace CourseWPF
         public MainWindow()
         {
             InitializeComponent();
+         
         }
 
+        //Connection string that is placed in config file, better alternative than displaying in code
         public static string ConnString(string name)
         {
             return ConfigurationManager.ConnectionStrings[name].ConnectionString;
@@ -58,41 +62,27 @@ namespace CourseWPF
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            InsertSubmission();
+            GetSubmission();
         }
 
-        private List<Submission> GetSubmission()
-        {
-            using (IDbConnection connection = new SqlConnection(ConnString(databaseName)))
-            {
-                try
-                {
-                    return connection.Query<Submission>($"SELECT * FROM "+ submissionTableName).ToList();
-                }
-                catch (Exception ex)
-                {
+        //****************************************************************
+        //Name: GetSubmission()
+        //Purpose: Get data from SQL, clear fields,
+        //         fill listBox Assignment
+        //Input Type: None
+        //Output Type: None
+        //****************************************************************
 
-                }
-                return null;
-            }
-        }
-
-        private void InsertSubmission()
+        private void GetSubmission()
         {
+            string sql = $"SELECT * FROM " + submissionTableName;
             using (SqlConnection connection = new SqlConnection(ConnString(databaseName)))
             {
                 try
                 {
-                    using (SqlCommand command = new SqlCommand(submissionTableName, connection))
-                    {
-                        command.CommandType = CommandType.StoredProcedure;
-                        command.Parameters.Add(new SqlParameter("@ParkingLotID", parkingLotID));
-                        command.Parameters.Add(new SqlParameter("@MaxCapacity", maxCapacity));
-                        command.Parameters.Add(new SqlParameter("@PermitType", permitType));
-                        connection.Open();
-                        command.ExecuteNonQuery();
-                        connection.Close();
-                    }
+                    Submissions = new ObservableCollection<Submission>(connection.Query<Submission>(sql).ToList());
+                    //clearFields();
+                    listBoxGrade.ItemsSource = Submissions;
                 }
                 catch (Exception ex)
                 {
@@ -100,6 +90,67 @@ namespace CourseWPF
                 }
             }
         }
+
+        //****************************************************************
+        //Name: InsertSubmission()
+        //Purpose: After user inputs JSON file, insert data to SQL, then 
+        //         fill listBox
+        //Input Type: None
+        //Output Type: None
+        //****************************************************************
+        private void InsertSubmission()
+        {
+            using (SqlConnection connection = new SqlConnection(ConnString(databaseName)))
+            {
+                string query = @"INSERT INTO " + submissionTableName + "(AssignmentName, CategoryName, Grade) " +
+                    "VALUES (@AssignmentName,@CategoryName,@Grade)";
+                //Establish open connection
+                connection.Open();
+                using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.Add(new SqlParameter("@AssignmentName", DbType.String ));
+                        command.Parameters.Add(new SqlParameter("@CategoryName", DbType.String));
+                        command.Parameters.Add(new SqlParameter("@Grade", DbType.Decimal));
+
+                    //Get information from JSON
+                    foreach (Submission submission in courseWork.Submissions)
+                    {
+                        //Insert values for each parameter
+                        command.Parameters[0].Value = submission.AssignmentName;
+                        command.Parameters[1].Value = submission.CategoryName;
+                        command.Parameters[2].Value = submission.Grade;
+                        //Execute 
+                        command.ExecuteNonQuery();
+                    }
+                        connection.Close();
+                        GetSubmission();
+                    }   
+            }
+        }
+
+        //****************************************************************
+        //Name: ClearDatabase()
+        //Purpose: Clears entire SQL database records then calls to InsertSubmission
+        //Input Type: None
+        //Output Type: None
+        //****************************************************************
+        private void ClearDatabase()
+        {
+            using (SqlConnection connection = new SqlConnection(ConnString(databaseName)))
+            {
+                string query = @"DELETE FROM "+ submissionTableName;
+                //Establish open connection
+                connection.Open();
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.ExecuteNonQuery();
+                    connection.Close();
+                    
+                    InsertSubmission();
+                }
+            }
+        }
+
 
 
         //****************************************************************
@@ -141,14 +192,14 @@ namespace CourseWPF
             if (result == true)
             {
                 //Clear previous boxes
+
                 readCourseWorkJSON(dlg.FileName);
             }
         }
 
         //****************************************************************
         //Name: readCourseWorkJSON()
-        //Purpose: Asks the user to input a file to read and will search for
-        //         a JSON file to set to the object
+        //Purpose: Search for a JSON file then call function to upload to DB
         //Input Type: None - setFileName for file name
         //Output Type: None
         //****************************************************************
@@ -162,7 +213,7 @@ namespace CourseWPF
                 courseWork = (CourseWorkClass)serializer.ReadObject(reader);
                 reader.Close();
                 Console.WriteLine("Reading Completed");
-                showCourseDetails();
+                ClearDatabase();
             }
             catch (FileNotFoundException)
             {
@@ -172,37 +223,6 @@ namespace CourseWPF
             {
                 Console.WriteLine("Wrong File Selected");
             }
-        }
-
-        //****************************************************************
-        //Name: showCourseDetails()
-        //Purpose: After user inputs JSON file, fill listBox Assignment
-        //Input Type: None
-        //Output Type: None
-        //****************************************************************
-        private void showCourseDetails()
-        {
-            //Clear ListViews then set items
-            clearFields();
-
-            //Assignments
-            foreach(Assignment asn in courseWork.Assignments)
-            {
-                listBoxGrade.Items.Add(asn);
-            }
-
-        }
-
-        //****************************************************************
-        //Name: clearFields()
-        //Purpose: Clears all fields including submissions
-        //Input Type: None
-        //Output Type: None
-        //****************************************************************
-        private void clearFields()
-        {
-            listBoxGrade.Items.Clear();
-            clearSubmissionFields();
         }
 
         //****************************************************************
@@ -237,7 +257,11 @@ namespace CourseWPF
         //****************************************************************
         private void About_Click(object sender, RoutedEventArgs e)
         {
+            string messageBoxText = "Course Work GUI \n Version 2.0 \n Kevin Wang";
+            string caption = "About Course Work GUI";
+            MessageBoxButton button = MessageBoxButton.OK;
 
+            MessageBox.Show(messageBoxText, caption, button);
         }
     }
 }
