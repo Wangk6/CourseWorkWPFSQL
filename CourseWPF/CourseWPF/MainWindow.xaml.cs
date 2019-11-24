@@ -3,6 +3,7 @@
 //
 // Purpose: Frontend GUI for the students coursework.
 //          The user picks a JSON file to read from.
+//          Uploads to SQL Server and reads from SQL.
 //
 // Written By: Kevin Wang
 //
@@ -157,7 +158,6 @@ namespace CourseWPF
         //Name: ImportJSON_Click()
         //Purpose: When user clicks on button 'Open Course Work JSON File',
         //         opens a file dialog that allows user to select a file.
-        //         The path is then displayed to textBoxFileName.
         //Input Type: None
         //Output Type: None
         //****************************************************************
